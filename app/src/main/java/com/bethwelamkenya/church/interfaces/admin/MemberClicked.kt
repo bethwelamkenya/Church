@@ -1,4 +1,4 @@
-package com.bethwelamkenya.church.interfaces
+package com.bethwelamkenya.church.interfaces.admin
 
 import androidx.cardview.widget.CardView
 import com.bethwelamkenya.church.models.Member
