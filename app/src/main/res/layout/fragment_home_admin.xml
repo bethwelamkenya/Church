@@ -3,12 +3,90 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/background"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.admin.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp"
+            android:weightSum="2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:baselineAligned="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/addButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_margin="10dp"
+                    android:elevation="5dp"
+                    android:text="Add Member"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/add_user_male" />
+
+                <Button
+                    android:id="@+id/attendancesButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_margin="10dp"
+                    android:elevation="5dp"
+                    android:text="Attendances"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/check" />
+
+                <Button
+                    android:id="@+id/accountButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_margin="10dp"
+                    android:elevation="5dp"
+                    android:text="Account"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/admin_settings_male" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/membersButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_margin="10dp"
+                    android:elevation="5dp"
+                    android:text="Members"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/group" />
+
+                <Button
+                    android:id="@+id/specificButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_margin="10dp"
+                    android:elevation="5dp"
+                    android:text="Specific"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/user_menu_male" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
