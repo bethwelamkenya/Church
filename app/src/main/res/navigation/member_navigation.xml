@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/member_navigation"
+    app:startDestination="@id/homeFragmentMember">
+
+    <fragment
+        android:id="@+id/homeFragmentMember"
+        android:name="com.bethwelamkenya.church.fragments.member.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home_member" >
+        <action
+            android:id="@+id/action_homeFragment3_to_accountFragment2"
+            app:destination="@id/accountFragmentMember" />
+        <action
+            android:id="@+id/action_homeFragment3_to_attendanceFragment2"
+            app:destination="@id/attendanceFragmentMember" />
+        <action
+            android:id="@+id/action_homeFragment3_self"
+            app:destination="@id/homeFragmentMember" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountFragmentMember"
+        android:name="com.bethwelamkenya.church.fragments.member.AccountFragment"
+        android:label="Account"
+        tools:layout="@layout/fragment_account_member" >
+        <action
+            android:id="@+id/action_accountFragment2_to_attendanceFragment2"
+            app:destination="@id/attendanceFragmentMember" />
+        <action
+            android:id="@+id/action_accountFragment2_to_homeFragment3"
+            app:destination="@id/homeFragmentMember" />
+        <action
+            android:id="@+id/action_accountFragment2_self"
+            app:destination="@id/accountFragmentMember" />
+    </fragment>
+    <fragment
+        android:id="@+id/attendanceFragmentMember"
+        android:name="com.bethwelamkenya.church.fragments.member.AttendanceFragment"
+        android:label="Attendances"
+        tools:layout="@layout/fragment_attendance_member" >
+        <action
+            android:id="@+id/action_attendanceFragment2_self"
+            app:destination="@id/attendanceFragmentMember" />
+        <action
+            android:id="@+id/action_attendanceFragment2_to_homeFragment3"
+            app:destination="@id/homeFragmentMember" />
+        <action
+            android:id="@+id/action_attendanceFragment2_to_accountFragment2"
+            app:destination="@id/accountFragmentMember" />
+    </fragment>
+</navigation>

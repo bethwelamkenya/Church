@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/developer_navigation"
+    app:startDestination="@id/homeFragmentDeveloper">
+
+    <fragment
+        android:id="@+id/homeFragmentDeveloper"
+        android:name="com.bethwelamkenya.church.fragments.developer.HomeFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_home_developer" >
+        <action
+            android:id="@+id/action_homeFragment2_to_adminsFragment"
+            app:destination="@id/adminsFragment" />
+        <action
+            android:id="@+id/action_homeFragment2_to_addFragment2"
+            app:destination="@id/addFragmentDeveloper" />
+        <action
+            android:id="@+id/action_homeFragment2_self"
+            app:destination="@id/homeFragmentDeveloper" />
+    </fragment>
+    <fragment
+        android:id="@+id/adminsFragment"
+        android:name="com.bethwelamkenya.church.fragments.developer.AdminsFragment"
+        android:label="Admins"
+        tools:layout="@layout/fragment_admins_developer" >
+        <action
+            android:id="@+id/action_adminsFragment_to_addFragment2"
+            app:destination="@id/addFragmentDeveloper" />
+        <action
+            android:id="@+id/action_adminsFragment_to_editFragment2"
+            app:destination="@id/editFragmentDeveloper" />
+        <action
+            android:id="@+id/action_adminsFragment_to_homeFragment2"
+            app:destination="@id/homeFragmentDeveloper" />
+        <action
+            android:id="@+id/action_adminsFragment_self"
+            app:destination="@id/adminsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addFragmentDeveloper"
+        android:name="com.bethwelamkenya.church.fragments.developer.AddFragment"
+        android:label="Add Admin"
+        tools:layout="@layout/fragment_add_developer" >
+        <action
+            android:id="@+id/action_addFragment2_to_adminsFragment"
+            app:destination="@id/adminsFragment" />
+        <action
+            android:id="@+id/action_addFragment2_to_homeFragment2"
+            app:destination="@id/homeFragmentDeveloper" />
+    </fragment>
+    <fragment
+        android:id="@+id/editFragmentDeveloper"
+        android:name="com.bethwelamkenya.church.fragments.developer.EditFragment"
+        android:label="Edit Admin"
+        tools:layout="@layout/fragment_edit_developer" >
+        <action
+            android:id="@+id/action_editFragment2_to_homeFragment2"
+            app:destination="@id/homeFragmentDeveloper" />
+    </fragment>
+</navigation>

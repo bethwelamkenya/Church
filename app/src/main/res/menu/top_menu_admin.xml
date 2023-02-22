@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/find_user_male"
+        android:title="Search"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="Home"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/members"
+        android:icon="@drawable/group"
+        android:title="Members"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/attendances"
+        android:icon="@drawable/check"
+        android:title="Attendances"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/specific"
+        android:icon="@drawable/user_menu_male"
+        android:title="Specific"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/account"
+        android:icon="@drawable/admin_settings_male"
+        android:title="Account"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/logOut"
+        android:icon="@drawable/logout_rounded_left"
+        android:title="Log Out"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/exit"
+        android:icon="@drawable/shutdown"
+        android:title="Quit App"
+        app:showAsAction="ifRoom" />
+</menu>
