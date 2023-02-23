@@ -1,11 +1,17 @@
 package com.bethwelamkenya.church.ui
 
 import android.content.Intent
+import android.content.res.Resources
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.widget.addTextChangedListener
+import androidx.preference.PreferenceManager
+import com.bethwelamkenya.church.R
 import com.bethwelamkenya.church.database.DatabaseAdapter
 import com.bethwelamkenya.church.databinding.ActivityMainBinding
 
@@ -17,6 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        myTheme()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.logIn.isEnabled = false
@@ -34,6 +41,25 @@ class MainActivity : AppCompatActivity() {
             }
         }
         binding.resetPassword.setOnClickListener{ Toast.makeText(this, "Not Yet Implemented", Toast.LENGTH_SHORT).show()}
+
+    }
+
+    private fun myTheme() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        when(sharedPreferences?.getString("themes", "system")){
+            "system" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            "light" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            "dark" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            "battery" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+            }
+        }
     }
 
     private fun validateDetails() {

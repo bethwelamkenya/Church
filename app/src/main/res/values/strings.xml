@@ -22,12 +22,12 @@
         <item>Community</item>
     </array>
     <array name="years">
+        <item>Community</item>
         <item>One</item>
         <item>Two</item>
         <item>Three</item>
         <item>Four</item>
         <item>Five</item>
-        <item>Community</item>
     </array>
     <array name="departments">
         <item>Media</item>
@@ -43,4 +43,52 @@
         <item>Pastor</item>
         <item>None</item>
     </array>
+    <array name="font_entries">
+        <item>System</item>
+        <item>Corbel</item>
+        <item>Dubai</item>
+    </array>
+    <array name="font_values">
+        <item>system</item>
+        <item>corbel</item>
+        <item>dubai</item>
+    </array>
+    <array name="font_size_entries">
+        <item>Small</item>
+        <item>System</item>
+        <item>Large</item>
+    </array>
+    <array name="font_size_values">
+        <item>small</item>
+        <item>system</item>
+        <item>large</item>
+    </array>
+    <array name="themes_entries">
+        <item>System</item>
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Battery</item>
+    </array>
+    <array name="themes_values">
+        <item>system</item>
+        <item>light</item>
+        <item>dark</item>
+        <item>battery</item>
+    </array>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="messages_header">Messages</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync Data periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>

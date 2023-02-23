@@ -206,6 +206,9 @@ class AdminActivity : AppCompatActivity() {
             R.id.account -> {
                 navigateToMyAccount()
             }
+            R.id.settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
+            }
             R.id.logOut -> {
                 startActivity(Intent(this, MainActivity::class.java))
                 this.finish()

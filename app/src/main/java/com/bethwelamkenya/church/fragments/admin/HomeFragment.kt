@@ -27,6 +27,10 @@ class HomeFragment : Fragment() {
         accountButton = view.findViewById(R.id.accountButton)
         add = view.findViewById(R.id.addButton)
         membersButton.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_membersFragment) }
+        attendancesButton.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_attendanceFragment) }
+        specificButton.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_specificFragment) }
+        accountButton.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_accountFragment) }
+        add.setOnClickListener { findNavController().navigate(R.id.action_homeFragment_to_addFragment) }
         return view
     }
 

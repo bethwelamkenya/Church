@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="font_family" type="font">
+        <item name="android:fontFamily">@font/dubai_regular</item>
+    </style>
+</resources>

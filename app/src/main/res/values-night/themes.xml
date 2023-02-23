@@ -19,7 +19,10 @@
         <item name="background">@color/mainDark</item>
         <item name="backgroundColor">@color/main</item>
         <item name="hintTextColor">@color/textHint</item>
+        <item name="textFillColor">@color/white</item>
         <item name="tint">@color/purple_200</item>
+        <item name="played_color">@color/mainLight</item>
+        <item name="android:colorBackground">@color/mainDark</item>
     </style>
 
     <style name="toolBar_Theme" parent="ThemeOverlay.MaterialComponents.Dark">
@@ -27,5 +30,10 @@
         <item name="android:subtitleTextColor" tools:targetApi="m">@color/textHint</item>
 <!--        <item name="android:iconTint" tools:targetApi="o">@color/black</item>-->
 <!--        <item name="android:popupTheme">ThemeOverlay.MaterialComponents.Dark</item>-->
+    </style>
+
+    <style name="ThemeOverlay.myPopupTheme" parent="ThemeOverlay.MaterialComponents.Dark">
+        <item name="android:colorBackground">@color/mainDark</item>
+        <item name="android:textColor">@color/purple_200</item>
     </style>
 </resources>

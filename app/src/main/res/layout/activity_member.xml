@@ -23,6 +23,7 @@
             android:background="@drawable/rounded_main"
             android:elevation="5dp"
             android:theme="@style/toolBar_Theme"
+            app:popupTheme="@style/ThemeOverlay.myPopupTheme"
             app:menu="@menu/top_menu_member"
             app:title="@string/app_name" />
     </com.google.android.material.appbar.AppBarLayout>

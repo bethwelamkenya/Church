@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.preference.PreferenceManager
 import com.bethwelamkenya.church.R
 import com.bethwelamkenya.church.databinding.ActivityDeveloperBinding
 import com.bethwelamkenya.church.databinding.ActivityMainBinding
@@ -66,6 +68,24 @@ class DeveloperActivity : AppCompatActivity() {
         }
     }
 
+    private fun myTheme() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        when(sharedPreferences?.getString("themes", "system")){
+            "system" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            }
+            "light" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            }
+            "dark" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            }
+            "battery" -> {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO_BATTERY)
+            }
+        }
+    }
+
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()
     }
@@ -85,6 +105,9 @@ class DeveloperActivity : AppCompatActivity() {
             }
             R.id.admins -> {
                 navigateToAllAdmins()
+            }
+            R.id.settings -> {
+                startActivity(Intent(this, SettingsActivity::class.java))
             }
             R.id.logOut -> {
                 startActivity(Intent(this, MainActivity::class.java))

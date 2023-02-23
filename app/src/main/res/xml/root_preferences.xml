@@ -1,0 +1,128 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:divider="?attr/tint">
+
+    <PreferenceCategory
+        app:icon="@drawable/filled_chat"
+        app:title="@string/messages_header">
+
+        <EditTextPreference
+            app:dialogIcon="@drawable/signature"
+            app:icon="@drawable/signature"
+            app:key="signature"
+            app:title="@string/signature_title"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="reply"
+            app:dialogIcon="@drawable/talk_male"
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:icon="@drawable/talk_male"
+            app:key="reply"
+            app:title="@string/reply_title"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:icon="@drawable/synchronize"
+        app:title="@string/sync_header">
+
+        <SwitchPreferenceCompat
+            app:defaultValue="true"
+            app:icon="@drawable/data_backup"
+            app:key="sync"
+            app:title="@string/sync_title" />
+
+        <SwitchPreferenceCompat
+            app:dependency="sync"
+            app:icon="@drawable/database_export"
+            app:key="attachment"
+            app:summaryOff="@string/attachment_summary_off"
+            app:summaryOn="@string/attachment_summary_on"
+            app:title="@string/attachment_title" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Themes"
+        app:icon="@drawable/themes">
+
+        <ListPreference
+            android:defaultValue="false"
+            android:dialogIcon="@drawable/paint_palette"
+            android:entries="@array/themes_entries"
+            android:entryValues="@array/themes_values"
+            android:key="themes"
+            app:defaultValue="system"
+            app:icon="@drawable/paint_palette"
+            app:summary="Change The App Theme"
+            app:title="Color Theme"
+            app:useSimpleSummaryProvider="false" />
+        <ListPreference
+            android:defaultValue="dubai"
+            android:entries="@array/font_entries"
+            android:entryValues="@array/font_values"
+            android:key="font"
+            android:title="Font Family"
+            app:dialogIcon="@drawable/font_style_formatting"
+            app:icon="@drawable/font_style_formatting"
+            app:useSimpleSummaryProvider="true" />
+        <ListPreference
+            android:defaultValue="system"
+            android:entries="@array/font_size_entries"
+            android:entryValues="@array/font_size_values"
+            android:key="font_size"
+            android:title="Font Size"
+            app:dialogIcon="@drawable/lowercase"
+            app:icon="@drawable/lowercase"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Info"
+        app:icon="@drawable/information">
+
+        <Preference
+            app:icon="@drawable/help"
+            app:summary="Get answers to your Questions"
+            app:title="Help" />
+
+        <Preference
+            app:icon="@drawable/info"
+            app:summary="This Application was made by Bethwel Karanja Wairimu"
+            app:title="About" />
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Social Media Handles"
+        app:icon="@drawable/activity_feed">
+
+        <Preference
+            app:icon="@drawable/gmail"
+            app:summary="karanjabethwel12598@gmail.com"
+            app:title="Gmail"/>
+        <Preference
+            app:icon="@drawable/twitter"
+            app:summary="www.twitter.com/@bethwel_karanja"
+            app:title="Twitter" >
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://www.twitter.com/@bethwel_karanja"/>
+        </Preference>
+        <Preference
+            app:icon="@drawable/github"
+            app:summary="www.github.com/bethwelamkenya"
+            app:title="Github">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://www.github.com/bethwelamkenya"/>
+        </Preference>
+        <Preference
+            app:icon="@drawable/youtube_play"
+            app:summary="www.youtube.com/@bethwel_karanja"
+            app:title="Youtube">
+            <intent android:action="android.intent.action.VIEW"
+                android:data="https://www.youtube.com/@bethwel_karanja"/>
+        </Preference>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

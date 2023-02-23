@@ -34,6 +34,11 @@
         android:title="Account"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/settings"
+        android:icon="@drawable/settings"
+        android:title="Settings"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/logOut"
         android:icon="@drawable/logout_rounded_left"
         android:title="Log Out"
