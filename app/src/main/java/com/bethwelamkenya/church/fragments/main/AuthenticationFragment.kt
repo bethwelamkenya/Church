@@ -44,11 +44,11 @@ class AuthenticationFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         adapter = DatabaseAdapter(view.context)
         authentication = activity as Authentication
-//        if (auth.currentUser != null){
-//            val myActivity = activity as MainActivity
-//            startActivity(Intent(view.context, AdminActivity::class.java))
-//            myActivity.finish()
-//        }
+        if (auth.currentUser != null){
+            val myActivity = activity as MainActivity
+            startActivity(Intent(view.context, AdminActivity::class.java))
+            myActivity.finish()
+        }
         logIn = view.findViewById(R.id.logIn)
         userName = view.findViewById(R.id.userName)
         password = view.findViewById(R.id.password)
@@ -116,7 +116,7 @@ class AuthenticationFragment : Fragment() {
                 }
             }
             1 -> {
-                sharedViewModel.userName = userName.text.toString()
+                sharedViewModel.userNumber = userName.text.toString()
                 findNavController().navigate(R.id.action_authenticationFragment_to_OTPFragment)
 //                authentication.userName(userName.text.toString())
 //                if (adapter.getMember(userName.text.toString()).size != 0){

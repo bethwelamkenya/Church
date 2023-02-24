@@ -1,5 +1,6 @@
 package com.bethwelamkenya.church.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -39,6 +40,11 @@ class MainActivity : AppCompatActivity() , Authentication{
         navController = navigationHostFragment.navController
         setupActionBarWithNavController(navController)
 
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        if (sharedPreferences.getBoolean("isLogIn", false)){
+            startActivity(Intent(this, AdminActivity::class.java))
+            this.finish()
+        }
     }
 
     private fun myTheme() {
