@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bethwelamkenya.church.R
 import com.bethwelamkenya.church.database.DatabaseAdapter
+import com.bethwelamkenya.church.interfaces.admin.AdminViewModel
 import com.bethwelamkenya.church.interfaces.admin.MemberClicked
+import com.bethwelamkenya.church.interfaces.main.MainViewModel
 import com.bethwelamkenya.church.models.Member
 import com.bethwelamkenya.church.recycler.admin.RecyclerAdapter
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -24,6 +27,7 @@ class MembersFragment : Fragment() , MemberClicked{
     private lateinit var add: ExtendedFloatingActionButton
     private lateinit var members: ArrayList<Member>
     private lateinit var recyclerView: RecyclerView
+    private val sharedViewModel: AdminViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +48,8 @@ class MembersFragment : Fragment() , MemberClicked{
     }
 
     override fun onMemberClicked(member: Member) {
-        TODO("Not yet implemented")
+        sharedViewModel.member = member
+        findNavController().navigate(R.id.action_membersFragment_to_editFragment)
     }
 
     override fun onMemberLongClicked(member: Member, cardView: CardView) {

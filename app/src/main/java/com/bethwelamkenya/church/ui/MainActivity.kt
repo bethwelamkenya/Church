@@ -1,46 +1,43 @@
 package com.bethwelamkenya.church.ui
 
-import android.content.Intent
-import android.content.res.Resources
-import android.os.Build
 import android.os.Bundle
-import android.text.InputType
-import android.widget.Toast
-import androidx.annotation.RequiresApi
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.widget.addTextChangedListener
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.preference.PreferenceManager
 import com.bethwelamkenya.church.R
 import com.bethwelamkenya.church.database.DatabaseAdapter
 import com.bethwelamkenya.church.databinding.ActivityMainBinding
+import com.bethwelamkenya.church.fragments.main.OTPFragment
+import com.bethwelamkenya.church.interfaces.main.Authentication
+import com.google.firebase.auth.FirebaseAuth
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity() , Authentication{
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+    private lateinit var navigationHostFragment: NavHostFragment
     private val isVisible = false
     private lateinit var adapter: DatabaseAdapter
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         myTheme()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.logIn.isEnabled = false
         adapter = DatabaseAdapter(this)
-        binding.userName.addTextChangedListener { validateDetails() }
-        binding.password.addTextChangedListener { validateDetails() }
-        binding.logIn.setOnClickListener { startLogIn() }
-        binding.seePassword.setOnClickListener {
-            isVisible != isVisible
-            if (isVisible){
-                binding.password.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
-            } else{
-                println("Password\npassword\npassword")
-                binding.password.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-            }
-        }
-        binding.resetPassword.setOnClickListener{ Toast.makeText(this, "Not Yet Implemented", Toast.LENGTH_SHORT).show()}
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        navigationHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        navController = navigationHostFragment.navController
+        setupActionBarWithNavController(navController)
 
     }
 
@@ -62,53 +59,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun validateDetails() {
-        if (binding.accounts.selectedItemPosition == 1) {
-            binding.logIn.isEnabled = binding.userName.text.toString() != ""
-        } else {
-            binding.logIn.isEnabled =
-                binding.userName.text.toString() != "" && binding.password.text.toString() != ""
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp()
     }
 
-    private fun startLogIn() {
-        when(binding.accounts.selectedItemPosition){
-            0 -> {
-                if (binding.userName.text.toString() == "bethu" && binding.password.text.toString() == "9852"){
-                    startActivity(
-                        Intent(
-                            this,
-                            AdminActivity::class.java
-                        )
-                    )
-                    this.finish()
-                } else {
-                    Toast.makeText(this, "Invalid Details Passed", Toast.LENGTH_SHORT).show()
-                }
-            }
-            1 -> {
-                if (adapter.getMember(binding.userName.text.toString()).size != 0){
-                    val intent = Intent(this, MemberActivity::class.java)
-                    intent.putExtra("member", binding.userName.text.toString())
-                    startActivity(intent)
-                    this.finish()
-                } else{
-                    Toast.makeText(this, "The Member Does Not Exist", Toast.LENGTH_SHORT).show()
-                }
-            }
-            else -> {
-                if (binding.userName.text.toString() == "bethu" && binding.password.text.toString() == "9852"){
-                    startActivity(
-                        Intent(
-                            this,
-                            DeveloperActivity::class.java
-                        )
-                    )
-                    this.finish()
-                } else {
-                    Toast.makeText(this, "Invalid Details Passed", Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+    override fun userName(userName: String) {
+        val bundle = Bundle()
+        bundle.putString("user_name", userName)
+        val transaction = this.supportFragmentManager.beginTransaction()
+        val otpFragment = OTPFragment()
+        otpFragment.arguments = bundle
+//        findNavController(R.id.fragmentContainerView).navigate(otpFragment)
+//        findNavController(R.id.fragmentContainerView).navigate(R.id.action_authenticationFragment_to_OTPFragment)
+//        transaction.
     }
 }
