@@ -32,7 +32,6 @@ class AuthenticationFragment : Fragment() {
     private lateinit var seePassword: ImageButton
     private lateinit var accounts: Spinner
     private lateinit var adapter: DatabaseAdapter
-    private lateinit var authentication: Authentication
     private val sharedViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -43,7 +42,6 @@ class AuthenticationFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_authentication, container, false)
         auth = FirebaseAuth.getInstance()
         adapter = DatabaseAdapter(view.context)
-        authentication = activity as Authentication
         if (auth.currentUser != null){
             val myActivity = activity as MainActivity
             startActivity(Intent(view.context, AdminActivity::class.java))

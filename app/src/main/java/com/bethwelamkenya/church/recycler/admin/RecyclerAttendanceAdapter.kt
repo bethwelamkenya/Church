@@ -12,9 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bethwelamkenya.church.R
 import com.bethwelamkenya.church.interfaces.admin.AttendanceClicked
 import com.bethwelamkenya.church.models.Attendance
-import com.bethwelamkenya.church.models.MemberAttendance
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RecyclerAttendanceAdapter(
     private val context: Context,
@@ -31,12 +29,13 @@ class RecyclerAttendanceAdapter(
 
     override fun onBindViewHolder(holder: RecyclerViewHolder, position: Int) {
         val attendance = attendanceList[position]
+        holder.attendance = attendance
         holder.id.text = attendance.id.toString()
         holder.name.text = attendance.name
-        holder.number.text = ""
+        holder.number.text = attendance.number.toString()
         holder.residence.text = attendance.residence
         holder.status.isChecked = attendance.status != 0
-        holder.status.setOnCheckedChangeListener { _, isChecked ->  attendanceClicked.checkBoxChanged(isChecked, holder.status)}
+        holder.status.setOnCheckedChangeListener { _, isChecked ->  attendanceClicked.checkBoxChanged(attendance, isChecked, holder.status)}
     }
 
     override fun getItemCount(): Int {
@@ -54,6 +53,7 @@ class RecyclerAttendanceAdapter(
     }
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        var attendance: Attendance? = null
         val id: TextView = itemView.findViewById(R.id.memberID)
         val name: TextView = itemView.findViewById(R.id.memberName)
         val number: TextView = itemView.findViewById(R.id.memberNumber)

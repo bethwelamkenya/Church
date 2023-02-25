@@ -5,11 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.EditText
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -17,13 +13,11 @@ import com.bethwelamkenya.church.R
 import com.bethwelamkenya.church.database.DatabaseAdapter
 import com.bethwelamkenya.church.interfaces.admin.AttendanceClicked
 import com.bethwelamkenya.church.models.Attendance
-import com.bethwelamkenya.church.models.ListAttendance
 import com.bethwelamkenya.church.models.Member
-import com.bethwelamkenya.church.models.MemberAttendance
 import com.bethwelamkenya.church.recycler.admin.RecyclerAttendanceAdapter
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class AttendanceFragment : Fragment() , AttendanceClicked{
@@ -31,6 +25,7 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
     private lateinit var fetchAttendances: Button
     private lateinit var selectedDate: EditText
     private lateinit var recyclerView: RecyclerView
+    private lateinit var saveAttendances: ExtendedFloatingActionButton
     private lateinit var adapter: DatabaseAdapter
     private lateinit var recyclerAdapter: RecyclerAttendanceAdapter
     private var day: Int = 1
@@ -44,6 +39,7 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
     private var allNames: MutableList<String> = ArrayList()
     private var storedNames: MutableList<String> = ArrayList()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,6 +51,7 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
         fetchAttendances = view.findViewById(R.id.fetchAttendances)
         selectedDate = view.findViewById(R.id.selectedDate)
         recyclerView = view.findViewById(R.id.recyclerViewAttendances)
+        saveAttendances = view.findViewById(R.id.saveAttendances)
         fetchAttendances.isEnabled = false
         setDate.setOnClickListener {
             // Create a new DatePickerDialog object with the current date as the default date
@@ -76,6 +73,13 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
             datePickerDialog.show()
         }
         fetchAttendances.setOnClickListener { fetchTheAttendances(view) }
+        saveAttendances.setOnClickListener {
+            if (isAttendanceEditing){
+                updateAttendance(view)
+            } else{
+                saveAttendances(view)
+            }
+        }
         return view
     }
     private val mDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth -> // Convert the selected date into a Date object
@@ -104,7 +108,7 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
     private fun fillRecyclerView(view: View, attendances: ArrayList<Attendance>){
         recyclerAdapter = RecyclerAttendanceAdapter(view.context, attendances, this)
         recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = StaggeredGridLayoutManager(2, LinearLayout.VERTICAL)
+        recyclerView.layoutManager = StaggeredGridLayoutManager(1, LinearLayout.VERTICAL)
         recyclerView.adapter = recyclerAdapter
     }
 
@@ -132,6 +136,7 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
                 null,
                     member.id,
                     member.name,
+                    member.number,
                     member.residence,
                     date,
                     0
@@ -152,17 +157,17 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
         attendances = adapter.getAttendances(date)
         members = adapter.getMembers()
         for (attendance in attendances){
-            storedNames.add(attendance.name)
+            storedNames.add(attendance.name.lowercase(Locale.getDefault()))
         }
         for (member in members){
-            allNames.add(member.name)
+            allNames.add(member.name.lowercase(Locale.getDefault()))
         }
 //        remove the names in "storedNames" from "allNames"
         allNames.removeAll(storedNames)
         // Iterate over each member in members
         for (member in members) {
             // Check if the member's name is in allNames
-            if (allNames.contains(member.name)) {
+            if (allNames.contains(member.name.lowercase(Locale.getDefault()))) {
                 // Add the member to membersWithNames
                 tempMembers.add(member)
             }
@@ -173,6 +178,7 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
                     null,
                     member.id,
                     member.name,
+                    member.number,
                     member.residence,
                     date,
                     0
@@ -260,7 +266,79 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
 //        submitAttendance.isDisable = false
     }
 
-//    private fun saveAttendance() {
+    private fun saveAttendances(view: View) {
+        // Create a temporary ArrayList to hold the updated members
+        val updatedMembers = ArrayList<Attendance>()
+
+//        for (i in 0 until recyclerAdapter.itemCount ?: 0)
+// Iterate over each item in the RecyclerView's adapter
+        for (i in 0 until recyclerAdapter.itemCount) {
+            // Get the ViewHolder for this item
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? RecyclerAttendanceAdapter.RecyclerViewHolder
+
+            // If the ViewHolder is not null and the CheckBox is checked, update the member's status
+            if (viewHolder?.status?.isChecked == true) {
+                val member = viewHolder.attendance
+
+                // Create a new Member object with the updated status
+                val updatedMember = Attendance(
+                    member?.attendanceId,
+                    member?.id,
+                    member!!.name,
+                    member?.number,
+                    member?.residence,
+                    date,
+                    1 // Set the status to 1 because the CheckBox is checked
+                )
+                // Check if the updatedMembers ArrayList already contains the Member object
+                val index = updatedMembers.indexOfFirst { it.attendanceId == member.attendanceId }
+                if (index != -1) {
+                    // If the Member object is already in the updatedMembers ArrayList, update its status
+                    updatedMembers[index] = member.copy(status = 1)
+                } else {
+                    // If the Member object is not in the updatedMembers ArrayList, create a new Member object with the updated status and add it to the ArrayList
+                    updatedMembers.add(member.copy(status = 1))
+                }
+
+                // Add the updated Member to the temporary ArrayList
+//                updatedMembers.add(updatedMember)
+            } else{
+                // If the ViewHolder is not null and the CheckBox is not checked, add the original member to the temporary ArrayList
+                updatedMembers.add(viewHolder?.attendance!!)
+            }
+            for (attendance in updatedMembers){
+                if (adapter.insertAttendance(attendance) == -1L){
+                    Toast.makeText(view.context, "Attendances Not Inserted", Toast.LENGTH_SHORT).show()
+                } else{
+                    Toast.makeText(view.context, "Attendances Inserted", Toast.LENGTH_SHORT).show()
+                }
+            }
+            adapter.insertDate(date)
+//            // If the ViewHolder is not null and the CheckBox is checked, update the member's status
+//            if (viewHolder != null && viewHolder.status.isChecked) {
+//                val member = viewHolder.member
+//
+//                // Create a new Member object with the updated status
+//                val updatedMember = Attendance(
+//                    member.attendanceId,
+//                    member.id,
+//                    member.name,
+//                    member.number,
+//                    member.residence,
+//                    member.date,
+//                    1 // Set the status to 1 because the CheckBox is checked
+//                )
+//
+//                // Add the updated Member to the temporary ArrayList
+//                updatedMembers.add(updatedMember)
+//            } else if (viewHolder != null) {
+//                // If the ViewHolder is not null and the CheckBox is not checked, add the original member to the temporary ArrayList
+//                updatedMembers.add(viewHolder.member)
+//            }
+        }
+
+// Do something with the updated members, such as save them to a database or display them in a dialog
+
 //        var status: Int
 ////            insert each member details into the "attendance" table in the database
 //        for (i in attendanceTable.items.indices) {
@@ -277,10 +355,94 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
 //        }
 //        adapter.insertDate(attendanceDatePicker.value.toString())
 //        stageSwitcher.switchDialogStages("Confirmation", "Attendance Submitted")
-//    }
+    }
 
-    override fun checkBoxChanged(isChecked: Boolean, checkBox: CheckBox) {
-        TODO("Not yet implemented")
+    private fun updateAttendance(view: View) {
+        // Create a temporary ArrayList to hold the updated members
+        val updatedMembers = ArrayList<Attendance>()
+
+//        for (i in 0 until recyclerAdapter.itemCount ?: 0)
+// Iterate over each item in the RecyclerView's adapter
+        for (i in 0 until recyclerAdapter.itemCount) {
+            // Get the ViewHolder for this item
+            val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? RecyclerAttendanceAdapter.RecyclerViewHolder
+
+            // If the ViewHolder is not null and the CheckBox is checked, update the member's status
+            if (viewHolder?.status?.isChecked == true) {
+                val member = viewHolder.attendance
+                // Check if the updatedMembers ArrayList already contains the Member object
+//                val index = updatedMembers.indexOfFirst { it.attendanceId == member?.attendanceId }
+//                if (index != -1) {
+//                    // If the Member object is already in the updatedMembers ArrayList, update its status
+//                    updatedMembers[index] = member.copy(status = 1)
+//                } else {
+//                    // If the Member object is not in the updatedMembers ArrayList, create a new Member object with the updated status and add it to the ArrayList
+//                    updatedMembers.add(member.copy(status = 1))
+//                }
+
+                // Create a new Member object with the updated status
+                val updatedMember = Attendance(
+                    member?.attendanceId,
+                    member?.id,
+                    member!!.name,
+                    member?.number,
+                    member?.residence,
+                    date,
+                    1 // Set the status to 1 because the CheckBox is checked
+                )
+                // Check if the updatedMembers ArrayList already contains the Member object
+                val index = updatedMembers.indexOfFirst { it.attendanceId == member.attendanceId }
+                if (index != -1) {
+                    // If the Member object is already in the updatedMembers ArrayList, update its status
+                    updatedMembers[index] = member.copy(status = 1)
+                } else {
+                    // If the Member object is not in the updatedMembers ArrayList, create a new Member object with the updated status and add it to the ArrayList
+                    updatedMembers.add(member.copy(status = 1))
+                }
+
+                // Add the updated Member to the temporary ArrayList
+//                updatedMembers.add(updatedMember)
+            } else{
+                // If the ViewHolder is not null and the CheckBox is not checked, add the original member to the temporary ArrayList
+                updatedMembers.add(viewHolder?.attendance!!)
+            }
+            for (attendance in updatedMembers){
+                if (storedNames.contains(attendance.name.lowercase(Locale.getDefault()))){
+                    adapter.updateAttendance(attendance)
+                } else{
+                    adapter.insertAttendance(attendance)
+                }
+            }
+        }
+//        //            things to do for every row in the attendances table
+//        for (i in attendanceTable.items.indices) {
+//            //                if the checkbox is checked, status is 1 else the status is 0
+//            val status = if (attendanceStatus.getCellObservableValue(i).value.isSelected) {
+//                1
+//            } else {
+//                0
+//            }
+////                if the member's name is in the "storedNames" list, update them otherwise create a new entry
+//            if (storedNames.contains(attendanceMemberName.getCellObservableValue(i).value.lowercase(Locale.getDefault()))) {
+//                adapter.updateAttendance(
+//                    attendanceId.getCellObservableValue(i).value,
+//                    attendanceMemberId.getCellObservableValue(i).value,
+//                    attendanceMemberName.getCellObservableValue(i).value,
+//                    attendanceDatePicker.value.toString(), status
+//                )
+//            } else {
+//                adapter.insertAttendance(
+//                    attendanceMemberId.getCellObservableValue(i).value,
+//                    attendanceMemberName.getCellObservableValue(i).value,
+//                    attendanceDatePicker.value.toString(), status
+//                )
+//            }
+//        }
+//        stageSwitcher.switchDialogStages("Confirmation", "Attendance Submitted")
+    }
+
+    override fun checkBoxChanged(attendance: Attendance, isChecked: Boolean, checkBox: CheckBox) {
+        Toast.makeText(view?.context, "Hi " + attendance.name, Toast.LENGTH_SHORT).show()
     }
 
 

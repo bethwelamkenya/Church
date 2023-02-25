@@ -1,7 +1,6 @@
 package com.bethwelamkenya.church.fragments.main
 
 import android.app.ProgressDialog
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -10,10 +9,8 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.preference.PreferenceManager
@@ -52,12 +49,12 @@ class OTPFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         mainActivity = activity as MainActivity
         dialog = ProgressDialog(view.context)
-        dialog.setMessage("Verifying Number and Sending an OTP.")
+        phoneNumber = sharedViewModel.userNumber
+        dialog.setMessage("Verifying Number ($phoneNumber) and Sending an OTP.")
         dialog.setCancelable(false)
         dialog.show()
         textView = view.findViewById(R.id.textView)
         pinView = view.findViewById(R.id.otpView)
-        phoneNumber = sharedViewModel.userNumber
         textView.text = phoneNumber
         val options = PhoneAuthOptions.newBuilder().setPhoneNumber(phoneNumber)
             .setTimeout(60L, TimeUnit.SECONDS).setActivity(mainActivity)

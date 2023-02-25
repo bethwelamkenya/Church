@@ -7,6 +7,7 @@ import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
+import android.database.sqlite.SQLiteQueryBuilder
 import com.bethwelamkenya.church.models.Admin
 import com.bethwelamkenya.church.models.Attendance
 import com.bethwelamkenya.church.models.Date
@@ -62,6 +63,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         val createAttendanceTable = ("create table $attendance_table ($attendance_id integer primary key autoincrement, " +
                 "$id integer not null, " +
                 "$name text not null, " +
+                "$number integer, " +
                 "$residence text, " +
                 "$date text not null, " +
                 "$status integer not null)")
@@ -117,6 +119,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         val contentValue = ContentValues()
         contentValue.put(id, attendance.id)
         contentValue.put(name, attendance.name)
+        contentValue.put(number, attendance.number)
         contentValue.put(residence, attendance.residence)
         contentValue.put(date, attendance.date)
         contentValue.put(status, attendance.status)
@@ -125,7 +128,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         return result
     }
 
-    fun insertMember(theDate: String) : Long{
+    fun insertDate(theDate: String) : Long{
         val db = this.writableDatabase
         val contentValue = ContentValues()
         contentValue.put(date, theDate)
@@ -173,6 +176,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         contentValues.put(attendance_id, attendance.attendanceId)
         contentValues.put(id, attendance.id)
         contentValues.put(name, attendance.name)
+        contentValues.put(number, attendance.number)
         contentValues.put(residence, attendance.residence)
         contentValues.put(date, attendance.date)
         contentValues.put(status, attendance.status)
@@ -214,16 +218,19 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getMember(theName: String): ArrayList<Member> {
         val members = ArrayList<Member>()
-//        val member: Member
-        val query = "select * from $member_table where $name like ?"
         val db = this.readableDatabase
+        val queryBuilder = SQLiteQueryBuilder()
+        queryBuilder.tables = member_table
+        val selection = "$name = ?"
+        val selectionArgs = arrayOf(theName)
         val cursor: Cursor?
-//        val context = applicationContext
+//        val query = "select * from $date_table where $date='$theDate'"
         try {
-            cursor = db.rawQuery(query, arrayOf(theName))
+            cursor = queryBuilder.query(db, null, selection, selectionArgs, null, null, null)
+//            cursor = db.rawQuery(query, null)
         } catch (ex: SQLiteException){
             println(ex.message)
-            db.execSQL(query)
+//            db.execSQL(query)
             return ArrayList()
         }
         try {
@@ -279,14 +286,19 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getAdmin(userName: String): Admin? {
         val admin: Admin
-        val query = "select * from $admin_table where $user_name like ?"
         val db = this.readableDatabase
+        val queryBuilder = SQLiteQueryBuilder()
+        queryBuilder.tables = admin_table
+        val selection = "$user_name like ?"
+        val selectionArgs = arrayOf(user_name)
         val cursor: Cursor?
+//        val query = "select * from $date_table where $date='$theDate'"
         try {
-            cursor = db.rawQuery(query, arrayOf(userName))
+            cursor = queryBuilder.query(db, null, selection, selectionArgs, null, null, null)
+//            cursor = db.rawQuery(query, null)
         } catch (ex: SQLiteException){
             println(ex.message)
-            db.execSQL(query)
+//            db.execSQL(query)
             return null
         }
         try {
@@ -310,15 +322,19 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getAdmin(userName: String, thePassword: String): Admin? {
         val admin: Admin
-        val arrays = arrayOf(userName, sha256(thePassword))
-        val query = "select * from $admin_table where $user_name like ? and $password=?"
         val db = this.readableDatabase
+        val queryBuilder = SQLiteQueryBuilder()
+        queryBuilder.tables = admin_table
+        val selection = "$user_name like ? and $password = ?"
+        val selectionArgs = arrayOf(userName, sha256(thePassword))
         val cursor: Cursor?
+//        val query = "select * from $date_table where $date='$theDate'"
         try {
-            cursor = db.rawQuery(query, arrays)
+            cursor = queryBuilder.query(db, null, selection, selectionArgs, null, null, null)
+//            cursor = db.rawQuery(query, null)
         } catch (ex: SQLiteException){
             println(ex.message)
-            db.execSQL(query)
+//            db.execSQL(query)
             return null
         }
         try {
@@ -357,6 +373,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
                 Attendance(cursor.getLong(cursor.getColumnIndex(attendance_id)),
                     cursor.getLong(cursor.getColumnIndex(id)),
                     cursor.getString(cursor.getColumnIndex(name)),
+                    cursor.getLong(cursor.getColumnIndex(number)),
                     cursor.getString(cursor.getColumnIndex(residence)),
                     cursor.getString(cursor.getColumnIndex(date)),
                     cursor.getInt(cursor.getColumnIndex(status))
@@ -370,14 +387,19 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getAttendances(theDate: String): ArrayList<Attendance> {
         val attendances: ArrayList<Attendance> = ArrayList()
-        val query = "select * from $attendance_table where $date=$theDate"
         val db = this.readableDatabase
+        val queryBuilder = SQLiteQueryBuilder()
+        queryBuilder.tables = attendance_table
+        val selection = "$date = ?"
+        val selectionArgs = arrayOf(theDate)
         val cursor: Cursor?
+//        val query = "select * from $date_table where $date='$theDate'"
         try {
-            cursor = db.rawQuery(query, null)
+            cursor = queryBuilder.query(db, null, selection, selectionArgs, null, null, null)
+//            cursor = db.rawQuery(query, null)
         } catch (ex: SQLiteException){
             println(ex.message)
-            db.execSQL(query)
+//            db.execSQL(query)
             return ArrayList()
         }
         while (cursor.moveToNext()){
@@ -385,6 +407,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
                 Attendance(cursor.getLong(cursor.getColumnIndex(attendance_id)),
                     cursor.getLong(cursor.getColumnIndex(id)),
                     cursor.getString(cursor.getColumnIndex(name)),
+                    cursor.getLong(cursor.getColumnIndex(number)),
                     cursor.getString(cursor.getColumnIndex(residence)),
                     cursor.getString(cursor.getColumnIndex(date)),
                     cursor.getInt(cursor.getColumnIndex(status))
@@ -398,14 +421,19 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getAttendancesByName(theName: String): ArrayList<Attendance> {
         val attendances: ArrayList<Attendance> = ArrayList()
-        val query = "select * from $attendance_table where $name=$theName"
         val db = this.readableDatabase
         val cursor: Cursor?
+        val queryBuilder = SQLiteQueryBuilder()
+        queryBuilder.tables = attendance_table
+        val selection = "$name = ?"
+        val selectionArgs = arrayOf(theName)
+//        val query = "select * from $date_table where $date='$theDate'"
         try {
-            cursor = db.rawQuery(query, null)
+            cursor = queryBuilder.query(db, null, selection, selectionArgs, null, null, null)
+//            cursor = db.rawQuery(query, null)
         } catch (ex: SQLiteException){
             println(ex.message)
-            db.execSQL(query)
+//            db.execSQL(query)
             return ArrayList()
         }
         while (cursor.moveToNext()){
@@ -413,6 +441,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
                 Attendance(cursor.getLong(cursor.getColumnIndex(attendance_id)),
                     cursor.getLong(cursor.getColumnIndex(id)),
                     cursor.getString(cursor.getColumnIndex(name)),
+                    cursor.getLong(cursor.getColumnIndex(number)),
                     cursor.getString(cursor.getColumnIndex(residence)),
                     cursor.getString(cursor.getColumnIndex(date)),
                     cursor.getInt(cursor.getColumnIndex(status))
@@ -449,14 +478,19 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getDates(theDate: String): ArrayList<Date> {
         val dates: ArrayList<Date> = ArrayList()
-        val query = "select * from $date_table where $date=?"
         val db = this.readableDatabase
+        val queryBuilder = SQLiteQueryBuilder()
+        queryBuilder.tables = date_table
+        val selection = "$date = ?"
+        val selectionArgs = arrayOf(theDate)
         val cursor: Cursor?
+//        val query = "select * from $date_table where $date='$theDate'"
         try {
-            cursor = db.rawQuery(query, arrayOf(theDate))
+            cursor = queryBuilder.query(db, null, selection, selectionArgs, null, null, null)
+//            cursor = db.rawQuery(query, null)
         } catch (ex: SQLiteException){
             println(ex.message)
-            db.execSQL(query)
+//            db.execSQL(query)
             return ArrayList()
         }
         while (cursor.moveToNext()){

@@ -19,12 +19,11 @@ import com.bethwelamkenya.church.interfaces.main.Authentication
 import com.google.firebase.auth.FirebaseAuth
 
 
-class MainActivity : AppCompatActivity() , Authentication{
+class MainActivity : AppCompatActivity(){
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var navigationHostFragment: NavHostFragment
-    private val isVisible = false
     private lateinit var adapter: DatabaseAdapter
     private lateinit var auth: FirebaseAuth
 
@@ -63,16 +62,5 @@ class MainActivity : AppCompatActivity() , Authentication{
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp()
-    }
-
-    override fun userName(userName: String) {
-        val bundle = Bundle()
-        bundle.putString("user_name", userName)
-        val transaction = this.supportFragmentManager.beginTransaction()
-        val otpFragment = OTPFragment()
-        otpFragment.arguments = bundle
-//        findNavController(R.id.fragmentContainerView).navigate(otpFragment)
-//        findNavController(R.id.fragmentContainerView).navigate(R.id.action_authenticationFragment_to_OTPFragment)
-//        transaction.
     }
 }

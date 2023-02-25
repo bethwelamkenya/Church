@@ -1,7 +1,8 @@
 package com.bethwelamkenya.church.interfaces.admin
 
 import android.widget.CheckBox
+import com.bethwelamkenya.church.models.Attendance
 
 interface AttendanceClicked {
-    fun checkBoxChanged(isChecked: Boolean, checkBox: CheckBox)
+    fun checkBoxChanged(attendance: Attendance, isChecked: Boolean, checkBox: CheckBox)
 }

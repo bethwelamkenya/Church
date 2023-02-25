@@ -71,23 +71,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearLayout"
             tools:listitem="@layout/attendance_design"
-            android:paddingBottom="50dp"/>
+            android:layout_marginBottom="50dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/addMemberButton"
+        android:id="@+id/saveAttendances"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:contentDescription="Add a new Member"
-        android:text="Add Member"
+        android:contentDescription="Save Attendances"
+        android:text="Save"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/white"
         app:backgroundTint="?attr/played_color"
         app:cornerRadius="10dp"
-        app:icon="@drawable/add_user_male"
+        app:icon="@drawable/save"
         app:iconTint="@color/white"
         app:rippleColor="@color/mainExtraLight" />
 
