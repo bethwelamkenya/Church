@@ -35,6 +35,9 @@ class RecyclerAttendanceAdapter(
         holder.number.text = attendance.number.toString()
         holder.residence.text = attendance.residence
         holder.status.isChecked = attendance.status != 0
+        if (position == attendanceList.size - 1){
+            holder.mainContainer.setPadding(0, 0, 0, convertDpToPixels(50, context))
+        }
         holder.status.setOnCheckedChangeListener { _, isChecked ->  attendanceClicked.checkBoxChanged(attendance, isChecked, holder.status)}
     }
 
@@ -51,6 +54,18 @@ class RecyclerAttendanceAdapter(
         }
         notifyDataSetChanged()
     }
+
+    fun convertDpToPixels(dp: Int, context: Context): Int {
+        val density = context.resources.displayMetrics.density
+        return (dp * density).toInt()
+    }
+
+
+    fun convertPixelsToDp(px: Int, context: Context): Int {
+        val density = context.resources.displayMetrics.density
+        return (px / (density / 160)).toInt()
+    }
+
 
     inner class RecyclerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var attendance: Attendance? = null

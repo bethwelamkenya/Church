@@ -37,17 +37,42 @@
                     app:cornerRadius="10dp"
                     app:icon="@drawable/edit_calendar" />
 
-                <EditText
-                    android:id="@+id/selectedDate"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
                     android:layout_weight="2"
-                    android:ems="10"
-                    android:enabled="false"
-                    android:singleLine="true"
-                    android:hint="Wed 23/02/2023"/>
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/selectedDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:ems="10"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:gravity="center"
+                        android:hint="Wed 23/02/2023"
+                        android:singleLine="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <RelativeLayout
+                        android:id="@+id/relativeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:background="?attr/tint"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/selectedDate" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </LinearLayout>
 
             <Button
@@ -70,8 +95,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/linearLayout"
-            tools:listitem="@layout/attendance_design"
-            android:layout_marginBottom="50dp"/>
+            tools:listitem="@layout/attendance_design" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

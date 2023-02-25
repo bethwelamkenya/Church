@@ -23,7 +23,7 @@ import java.util.*
 class AttendanceFragment : Fragment() , AttendanceClicked{
     private lateinit var setDate: Button
     private lateinit var fetchAttendances: Button
-    private lateinit var selectedDate: EditText
+    private lateinit var selectedDate: TextView
     private lateinit var recyclerView: RecyclerView
     private lateinit var saveAttendances: ExtendedFloatingActionButton
     private lateinit var adapter: DatabaseAdapter
@@ -74,36 +74,36 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
         }
         fetchAttendances.setOnClickListener { fetchTheAttendances(view) }
         saveAttendances.setOnClickListener {
-            if (isAttendanceEditing){
-                updateAttendance(view)
-            } else{
+            if (adapter.getDates(date).size == 0){
                 saveAttendances(view)
+            } else{
+                updateAttendance(view)
             }
         }
         return view
     }
     private val mDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth -> // Convert the selected date into a Date object
-            val calendar = Calendar.getInstance()
-            calendar[year, month] = dayOfMonth
-            val date = calendar.time
+        val calendar = Calendar.getInstance()
+        calendar[year, month] = dayOfMonth
+        val date = calendar.time
 
-            // Format the Date object to get the day of the week
-            val simpleDateFormat = SimpleDateFormat("EEE", Locale.getDefault())
-            val dayOfWeek: String = simpleDateFormat.format(date)
+        // Format the Date object to get the day of the week
+        val simpleDateFormat = SimpleDateFormat("EEE", Locale.getDefault())
+        val dayOfWeek: String = simpleDateFormat.format(date)
 
-            val dayOfMonthStr = java.lang.String.format(Locale.getDefault(), "%02d", dayOfMonth)
-            val monthStr = java.lang.String.format(Locale.getDefault(), "%02d", month + 1)
-            // Do something with the selected date and day of the week
-            val selectedDate = "$dayOfWeek $dayOfMonthStr/$monthStr/$year"
-            Toast.makeText(
-                view.context,
-                "Selected Date: $selectedDate",
-                Toast.LENGTH_SHORT
-            ).show()
-            this.date = selectedDate
-            fetchAttendances.isEnabled = true
-            this.selectedDate.setText(selectedDate)
-        }
+        val dayOfMonthStr = java.lang.String.format(Locale.getDefault(), "%02d", dayOfMonth)
+        val monthStr = java.lang.String.format(Locale.getDefault(), "%02d", month + 1)
+        // Do something with the selected date and day of the week
+        val selectedDate = "$dayOfWeek $dayOfMonthStr/$monthStr/$year"
+        Toast.makeText(
+            view.context,
+            "Selected Date: $selectedDate",
+            Toast.LENGTH_SHORT
+        ).show()
+        this.date = selectedDate
+        fetchAttendances.isEnabled = true
+        this.selectedDate.text = selectedDate
+    }
 
     private fun fillRecyclerView(view: View, attendances: ArrayList<Attendance>){
         recyclerAdapter = RecyclerAttendanceAdapter(view.context, attendances, this)
@@ -276,44 +276,36 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
             // Get the ViewHolder for this item
             val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? RecyclerAttendanceAdapter.RecyclerViewHolder
 
+            val attendance = viewHolder!!.attendance!!
             // If the ViewHolder is not null and the CheckBox is checked, update the member's status
-            if (viewHolder?.status?.isChecked == true) {
-                val member = viewHolder.attendance
-
-                // Create a new Member object with the updated status
-                val updatedMember = Attendance(
-                    member?.attendanceId,
-                    member?.id,
-                    member!!.name,
-                    member?.number,
-                    member?.residence,
-                    date,
-                    1 // Set the status to 1 because the CheckBox is checked
-                )
-                // Check if the updatedMembers ArrayList already contains the Member object
-                val index = updatedMembers.indexOfFirst { it.attendanceId == member.attendanceId }
-                if (index != -1) {
-                    // If the Member object is already in the updatedMembers ArrayList, update its status
-                    updatedMembers[index] = member.copy(status = 1)
-                } else {
-                    // If the Member object is not in the updatedMembers ArrayList, create a new Member object with the updated status and add it to the ArrayList
-                    updatedMembers.add(member.copy(status = 1))
-                }
+            if (viewHolder.status.isChecked) {
+                updatedMembers.add(attendance.copy(status = 1))
+//                // Create a new Member object with the updated status
+//                val updatedMember = Attendance(
+//                    attendance.attendanceId,
+//                    attendance.id,
+//                    attendance.name,
+//                    attendance.number,
+//                    attendance.residence,
+//                    date,
+//                    1 // Set the status to 1 because the CheckBox is checked
+//                )
+//                // Check if the updatedMembers ArrayList already contains the Member object
+//                val index = updatedMembers.indexOfFirst { it.attendanceId == attendance.attendanceId }
+//                if (index != -1) {
+//                    // If the Member object is already in the updatedMembers ArrayList, update its status
+//                    updatedMembers[index] = attendance.copy(status = 1)
+//                } else {
+//                    // If the Member object is not in the updatedMembers ArrayList, create a new Member object with the updated status and add it to the ArrayList
+//                    updatedMembers.add(attendance.copy(status = 1))
+//                }
 
                 // Add the updated Member to the temporary ArrayList
 //                updatedMembers.add(updatedMember)
             } else{
                 // If the ViewHolder is not null and the CheckBox is not checked, add the original member to the temporary ArrayList
-                updatedMembers.add(viewHolder?.attendance!!)
+                updatedMembers.add(attendance)
             }
-            for (attendance in updatedMembers){
-                if (adapter.insertAttendance(attendance) == -1L){
-                    Toast.makeText(view.context, "Attendances Not Inserted", Toast.LENGTH_SHORT).show()
-                } else{
-                    Toast.makeText(view.context, "Attendances Inserted", Toast.LENGTH_SHORT).show()
-                }
-            }
-            adapter.insertDate(date)
 //            // If the ViewHolder is not null and the CheckBox is checked, update the member's status
 //            if (viewHolder != null && viewHolder.status.isChecked) {
 //                val member = viewHolder.member
@@ -336,6 +328,11 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
 //                updatedMembers.add(viewHolder.member)
 //            }
         }
+        for (myAttendance in updatedMembers){
+            adapter.insertAttendance(myAttendance)
+        }
+        adapter.insertDate(date)
+        Toast.makeText(view.context, "Done", Toast.LENGTH_SHORT).show()
 
 // Do something with the updated members, such as save them to a database or display them in a dialog
 
@@ -367,9 +364,10 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
             // Get the ViewHolder for this item
             val viewHolder = recyclerView.findViewHolderForAdapterPosition(i) as? RecyclerAttendanceAdapter.RecyclerViewHolder
 
+            val attendance = viewHolder!!.attendance!!
             // If the ViewHolder is not null and the CheckBox is checked, update the member's status
-            if (viewHolder?.status?.isChecked == true) {
-                val member = viewHolder.attendance
+            if (viewHolder.status.isChecked) {
+                updatedMembers.add(attendance.copy(status = 1))
                 // Check if the updatedMembers ArrayList already contains the Member object
 //                val index = updatedMembers.indexOfFirst { it.attendanceId == member?.attendanceId }
 //                if (index != -1) {
@@ -381,39 +379,42 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
 //                }
 
                 // Create a new Member object with the updated status
-                val updatedMember = Attendance(
-                    member?.attendanceId,
-                    member?.id,
-                    member!!.name,
-                    member?.number,
-                    member?.residence,
-                    date,
-                    1 // Set the status to 1 because the CheckBox is checked
-                )
+//                val updatedMember = Attendance(
+//                    member?.attendanceId,
+//                    member?.id,
+//                    member!!.name,
+//                    member?.number,
+//                    member?.residence,
+//                    date,
+//                    1 // Set the status to 1 because the CheckBox is checked
+//                )
                 // Check if the updatedMembers ArrayList already contains the Member object
-                val index = updatedMembers.indexOfFirst { it.attendanceId == member.attendanceId }
-                if (index != -1) {
-                    // If the Member object is already in the updatedMembers ArrayList, update its status
-                    updatedMembers[index] = member.copy(status = 1)
-                } else {
-                    // If the Member object is not in the updatedMembers ArrayList, create a new Member object with the updated status and add it to the ArrayList
-                    updatedMembers.add(member.copy(status = 1))
-                }
+//                val index = updatedMembers.indexOfFirst { it.attendanceId == member.attendanceId }
+//                if (index != -1) {
+//                    // If the Member object is already in the updatedMembers ArrayList, update its status
+//                    updatedMembers[index] = member.copy(status = 1)
+//                } else {
+//                    // If the Member object is not in the updatedMembers ArrayList, create a new Member object with the updated status and add it to the ArrayList
+//                    updatedMembers.add(member.copy(status = 1))
+//                }
 
                 // Add the updated Member to the temporary ArrayList
 //                updatedMembers.add(updatedMember)
             } else{
                 // If the ViewHolder is not null and the CheckBox is not checked, add the original member to the temporary ArrayList
-                updatedMembers.add(viewHolder?.attendance!!)
-            }
-            for (attendance in updatedMembers){
-                if (storedNames.contains(attendance.name.lowercase(Locale.getDefault()))){
-                    adapter.updateAttendance(attendance)
-                } else{
-                    adapter.insertAttendance(attendance)
-                }
+                updatedMembers.add(viewHolder.attendance!!)
             }
         }
+        for (attendance in updatedMembers){
+            if (storedNames.contains(attendance.name.lowercase(Locale.getDefault()))){
+                adapter.updateAttendance(attendance)
+//                Toast.makeText(view.context, "updated", Toast.LENGTH_SHORT).show()
+            } else{
+                adapter.insertAttendance(attendance)
+//                Toast.makeText(view.context, "inserted", Toast.LENGTH_SHORT).show()
+            }
+        }
+        Toast.makeText(view.context, "Done", Toast.LENGTH_SHORT).show()
 //        //            things to do for every row in the attendances table
 //        for (i in attendanceTable.items.indices) {
 //            //                if the checkbox is checked, status is 1 else the status is 0
