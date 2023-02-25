@@ -45,21 +45,26 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="2"
                 android:orientation="horizontal">
 
                 <CheckBox
                     android:id="@+id/allDates"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:text="All Dates"
                     android:textColor="?attr/hintTextColor" />
 
                 <CheckBox
                     android:id="@+id/specificDates"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:text="Specific Dates"
                     android:textColor="?attr/hintTextColor" />
             </LinearLayout>
@@ -67,24 +72,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:weightSum="2"
                 android:orientation="horizontal">
 
-                <TextView
+                <EditText
                     android:id="@+id/startDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="22/02/2023"
+                    android:focusable="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:enabled="false"
+                    android:hint="Wed 22/02/2023"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-                <TextView
+                <EditText
                     android:id="@+id/endDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="22/02/2023"
+                    android:focusable="false"
+                    android:enabled="false"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="Wed 22/02/2023"
                     android:textAppearance="@style/TextAppearance.AppCompat.Large" />
             </LinearLayout>
 
@@ -97,9 +109,11 @@
                     android:id="@+id/startDateButton"
                     android:layout_width="wrap_content"
                     android:layout_height="75dp"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="Start Date"
+                    android:elevation="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/edit_calendar" />
@@ -108,9 +122,11 @@
                     android:id="@+id/endDateButton"
                     android:layout_width="wrap_content"
                     android:layout_height="75dp"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:layout_weight="1"
                     android:text="End Date"
+                    android:elevation="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/edit_calendar"
@@ -124,6 +140,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:gravity="center"
+                android:elevation="5dp"
                 android:text="Fetch Attendances"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 app:cornerRadius="10dp"

@@ -33,6 +33,7 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:text="Set Date"
+                    android:elevation="5dp"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/edit_calendar" />
@@ -58,6 +59,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:text="Fetch Attendances"
+                android:elevation="5dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 app:cornerRadius="10dp"
                 app:icon="@drawable/database_restore" />
