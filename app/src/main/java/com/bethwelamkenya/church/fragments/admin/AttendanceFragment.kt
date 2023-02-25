@@ -23,7 +23,7 @@ import java.util.*
 class AttendanceFragment : Fragment() , AttendanceClicked{
     private lateinit var setDate: Button
     private lateinit var fetchAttendances: Button
-    private lateinit var selectedDate: TextView
+    private lateinit var selectedDate: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var saveAttendances: ExtendedFloatingActionButton
     private lateinit var adapter: DatabaseAdapter
@@ -83,27 +83,27 @@ class AttendanceFragment : Fragment() , AttendanceClicked{
         return view
     }
     private val mDateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth -> // Convert the selected date into a Date object
-        val calendar = Calendar.getInstance()
-        calendar[year, month] = dayOfMonth
-        val date = calendar.time
+            val calendar = Calendar.getInstance()
+            calendar[year, month] = dayOfMonth
+            val date = calendar.time
 
-        // Format the Date object to get the day of the week
-        val simpleDateFormat = SimpleDateFormat("EEE", Locale.getDefault())
-        val dayOfWeek: String = simpleDateFormat.format(date)
+            // Format the Date object to get the day of the week
+            val simpleDateFormat = SimpleDateFormat("EEE", Locale.getDefault())
+            val dayOfWeek: String = simpleDateFormat.format(date)
 
-        val dayOfMonthStr = java.lang.String.format(Locale.getDefault(), "%02d", dayOfMonth)
-        val monthStr = java.lang.String.format(Locale.getDefault(), "%02d", month + 1)
-        // Do something with the selected date and day of the week
-        val selectedDate = "$dayOfWeek $dayOfMonthStr/$monthStr/$year"
-        Toast.makeText(
-            view.context,
-            "Selected Date: $selectedDate",
-            Toast.LENGTH_SHORT
-        ).show()
-        this.date = selectedDate
-        fetchAttendances.isEnabled = true
-        this.selectedDate.text = selectedDate
-    }
+            val dayOfMonthStr = java.lang.String.format(Locale.getDefault(), "%02d", dayOfMonth)
+            val monthStr = java.lang.String.format(Locale.getDefault(), "%02d", month + 1)
+            // Do something with the selected date and day of the week
+            val selectedDate = "$dayOfWeek $dayOfMonthStr/$monthStr/$year"
+            Toast.makeText(
+                view.context,
+                "Selected Date: $selectedDate",
+                Toast.LENGTH_SHORT
+            ).show()
+            this.date = selectedDate
+            fetchAttendances.isEnabled = true
+            this.selectedDate.setText(selectedDate)
+        }
 
     private fun fillRecyclerView(view: View, attendances: ArrayList<Attendance>){
         recyclerAdapter = RecyclerAttendanceAdapter(view.context, attendances, this)
