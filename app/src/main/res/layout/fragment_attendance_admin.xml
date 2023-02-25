@@ -26,7 +26,7 @@
                 android:weightSum="3">
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/setDate"
                     android:layout_width="0dp"
                     android:layout_height="75dp"
                     android:layout_gravity="center"
@@ -38,21 +38,20 @@
                     app:icon="@drawable/edit_calendar" />
 
                 <EditText
-                    android:id="@+id/editTextTextPersonName"
+                    android:id="@+id/selectedDate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:layout_weight="2"
                     android:ems="10"
-                    android:singleLine="true"
                     android:enabled="false"
-                    android:hint="Wed 23/02/2023"
-                    android:inputType="textPersonName" />
+                    android:singleLine="true"
+                    android:hint="Wed 23/02/2023"/>
             </LinearLayout>
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/fetchAttendances"
                 android:layout_width="match_parent"
                 android:layout_height="75dp"
                 android:layout_marginStart="20dp"
@@ -64,7 +63,7 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewMembers"
+            android:id="@+id/recyclerViewAttendances"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"

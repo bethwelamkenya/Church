@@ -446,6 +446,29 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         return dates
     }
 
+    @SuppressLint("Range")
+    fun getDates(theDate: String): ArrayList<Date> {
+        val dates: ArrayList<Date> = ArrayList()
+        val query = "select * from $date_table where $date=?"
+        val db = this.readableDatabase
+        val cursor: Cursor?
+        try {
+            cursor = db.rawQuery(query, arrayOf(theDate))
+        } catch (ex: SQLiteException){
+            println(ex.message)
+            db.execSQL(query)
+            return ArrayList()
+        }
+        while (cursor.moveToNext()){
+            dates.add(Date(cursor.getLong(cursor.getColumnIndex(id)),
+                cursor.getString(cursor.getColumnIndex(date))
+            )
+            )
+        }
+        cursor.close()
+        return dates
+    }
+
     fun deleteMember(theId: Long) : Int{
         val db = this.writableDatabase
         val result = db.delete(member_table, "$id=$theId", null)

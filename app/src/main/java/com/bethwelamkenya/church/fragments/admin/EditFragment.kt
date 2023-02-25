@@ -153,7 +153,7 @@ class EditFragment : Fragment() {
             residence.text.toString())
         if (adapter.updateMember(member) != 0) {
             Toast.makeText(view.context, "Member Updated Successfully", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_editFragment_to_homeFragment)
+            findNavController().navigate(R.id.action_editFragment_to_membersFragment)
         } else {
             Toast.makeText(view.context, "Could Not Update Member", Toast.LENGTH_SHORT).show()
         }

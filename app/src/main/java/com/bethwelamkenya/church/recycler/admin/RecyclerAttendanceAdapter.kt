@@ -33,9 +33,10 @@ class RecyclerAttendanceAdapter(
         val attendance = attendanceList[position]
         holder.id.text = attendance.id.toString()
         holder.name.text = attendance.name
+        holder.number.text = ""
         holder.residence.text = attendance.residence
         holder.status.isChecked = attendance.status != 0
-        holder.status.setOnCheckedChangeListener { buttonView, isChecked ->  attendanceClicked.checkBoxChanged(isChecked, holder.status)}
+        holder.status.setOnCheckedChangeListener { _, isChecked ->  attendanceClicked.checkBoxChanged(isChecked, holder.status)}
     }
 
     override fun getItemCount(): Int {
@@ -59,6 +60,6 @@ class RecyclerAttendanceAdapter(
         val residence: TextView = itemView.findViewById(R.id.memberResidence)
         val status: CheckBox = itemView.findViewById(R.id.memberStatus)
         val mainContainer: ConstraintLayout = itemView.findViewById(R.id.mainContainer)
-        val cardView: CardView = itemView.findViewById(R.id.memberCard)
+        val cardView: CardView = itemView.findViewById(R.id.attendanceCard)
     }
 }
