@@ -11,6 +11,8 @@ import com.bethwelamkenya.church.models.Admin
 import com.bethwelamkenya.church.models.Attendance
 import com.bethwelamkenya.church.models.Date
 import com.bethwelamkenya.church.models.Member
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_name, null, database_version) {
 
@@ -52,7 +54,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         val createAdminTable = ("create table $admin_table ($id integer primary key autoincrement, " +
                 "$name text not null, " +
                 "$email text, " +
-                "$number integer, " +
+                "$number integer not null, " +
                 "$user_name text not null, " +
                 "$password integer not null, " +
                 "$security text not null, " +
@@ -102,7 +104,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         contentValue.put(email, admin.email)
         contentValue.put(number, admin.number)
         contentValue.put(user_name, admin.userName)
-        contentValue.put(password, admin.password)
+        contentValue.put(password, sha256(admin.password))
         contentValue.put(security, admin.security)
         contentValue.put(answer, admin.answer)
         val result = db.insert(admin_table, null, contentValue)
@@ -157,7 +159,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         contentValues.put(email, admin.email)
         contentValues.put(number, admin.number)
         contentValues.put(user_name, admin.userName)
-        contentValues.put(password, admin.password)
+        contentValues.put(password, sha256(admin.password))
         contentValues.put(security, admin.security)
         contentValues.put(answer, admin.answer)
         val result = db.update(admin_table, contentValues, "$id=" + admin.id, null)
@@ -213,7 +215,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     fun getMember(theName: String): ArrayList<Member> {
         val members = ArrayList<Member>()
 //        val member: Member
-        val query = "select * from $member_table where $name=?"
+        val query = "select * from $member_table where $name like ?"
         val db = this.readableDatabase
         val cursor: Cursor?
 //        val context = applicationContext
@@ -277,7 +279,7 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getAdmin(userName: String): Admin? {
         val admin: Admin
-        val query = "select * from $admin_table where $user_name=?"
+        val query = "select * from $admin_table where $user_name like ?"
         val db = this.readableDatabase
         val cursor: Cursor?
         try {
@@ -308,8 +310,8 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
     @SuppressLint("Range")
     fun getAdmin(userName: String, thePassword: String): Admin? {
         val admin: Admin
-        val arrays = arrayOf(userName, thePassword)
-        val query = "select * from $admin_table where $user_name=? and $password=?"
+        val arrays = arrayOf(userName, sha256(thePassword))
+        val query = "select * from $admin_table where $user_name like ? and $password=?"
         val db = this.readableDatabase
         val cursor: Cursor?
         try {
@@ -456,5 +458,17 @@ class DatabaseAdapter (context: Context) : SQLiteOpenHelper(context, database_na
         val result = db.delete(admin_table, "$id=$theId", null)
         db.close()
         return result
+    }
+
+    private fun sha256(input: String): String? {
+        return try {
+            val bytes = input.toByteArray()
+            val md = MessageDigest.getInstance("SHA-256")
+            val digest = md.digest(bytes)
+            digest.joinToString("") { String.format("%02x", it) }
+        } catch (e: NoSuchAlgorithmException) {
+            println(e)
+            null
+        }
     }
 }
