@@ -41,10 +41,6 @@ class MainActivity : AppCompatActivity() , Authentication{
         setupActionBarWithNavController(navController)
 
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-//        if (sharedPreferences.getBoolean("isLogIn", false)){
-//            startActivity(Intent(this, AdminActivity::class.java))
-//            this.finish()
-//        }
     }
 
     private fun myTheme() {
